@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Harvest Coffee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Animated Coffee Background */
+        .coffee-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #D2B48C, #8B4513, #A0522D, #D2B48C);
+            background-size: 400% 400%;
+            animation: coffeeSteam 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes coffeeSteam {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin: 0;
+            color: #8B4513;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product h2 {
+            font-family: 'Playfair Display', serif;
+            color: #8B4513;
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+
+        .product p {
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .product button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .product button:hover {
+            background-color: #A0522D;
+            transform: scale(1.05);
+        }
+
+        .language-toggle {
+            text-align: right;
+            padding: 10px;
+        }
+
+        .language-toggle button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .language-toggle button:hover {
+            background-color: #A0522D;
+            transform: scale(1.05);
+        }
+
+        .cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .cart button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .cart button:hover {
+            background-color: #A0522D;
+            transform: scale(1.05);
+        }
+
+        .cart-items {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+            max-height: 300px; /* Altura máxima del carrito */
+            overflow-y: auto; /* Scroll vertical */
+        }
+
+        .cart-items.show {
+            display: block;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .cart-item button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .cart-item button:hover {
+            background-color: #ff1a1a;
+        }
+
+        .cart-actions {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cart-actions button {
+            width: 48%;
+        }
+
+        .checkout-form {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+
+        .checkout-form.show {
+            display: block;
+        }
+
+        .checkout-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .checkout-form button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .checkout-form button:hover {
+            background-color: #A0522D;
+            transform: scale(1.05);
+        }
+
+        .origin-section {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .origin-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: #8B4513;
+            font-size: 2rem;
+            margin: 0 0 10px 0;
+        }
+
+        .origin-section p {
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .coffee-icon {
+            font-size: 2rem;
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="coffee-background"></div>
+
+    <header>
+        <h1 id="title">The Harvest Coffee</h1>
+    </header>
+
+    <div class="language-toggle">
+        <button onclick="toggleLanguage()" id="languageButton">Español</button>
+    </div>
+
+    <div class="cart">
+        <button onclick="toggleCart()">Ver Carrito (<span id="cart-count">0</span>)</button>
+        <div class="cart-items" id="cart-items">
+            <h3>Carrito de Compras</h3>
+            <div id="cart-list"></div>
+            <div class="cart-actions">
+                <button onclick="showCheckout()">Pagar</button>
+                <button onclick="toggleCart()">Seguir Comprando</button>
+            </div>
+        </div>
+        <div class="checkout-form" id="checkout-form">
+            <h3>Pagar</h3>
+            <input type="text" id="card-name" placeholder="Nombre en la tarjeta">
+            <input type="text" id="card-number" placeholder="Número de tarjeta">
+            <button onclick="completePurchase()">Completar Compra</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="product">
+            <div class="coffee-icon">☕</div>
+            <h2 id="product1">Colombian Coffee</h2>
+            <p id="description1">A rich and aromatic coffee from the mountains of Colombia.</p>
+            <p id="price1">Price: $10.00</p>
+            <button onclick="addToCart('Colombian Coffee', 10)" id="buyButton1">Buy Now</button>
+        </div>
+
+        <div class="product">
+            <div class="coffee-icon">☕</div>
+            <h2 id="product2">Ethiopian Coffee</h2>
+            <p id="description2">A fruity and floral coffee with a unique taste from Ethiopia.</p>
+            <p id="price2">Price: $12.00</p>
+            <button onclick="addToCart('Ethiopian Coffee', 12)" id="buyButton2">Buy Now</button>
+        </div>
+
+        <div class="product">
+            <div class="coffee-icon">☕</div>
+            <h2 id="product3">Brazilian Coffee</h2>
+            <p id="description3">A smooth and nutty coffee from the heart of Brazil.</p>
+            <p id="price3">Price: $9.00</p>
+            <button onclick="addToCart('Brazilian Coffee', 9)" id="buyButton3">Buy Now</button>
+        </div>
+
+        <div class="origin-section">
+            <h2>Origen de Nuestros Cafés</h2>
+            <p id="origin-text">Nuestros cafés son cuidadosamente seleccionados de las mejores regiones cafetaleras del mundo. Desde las montañas de Colombia hasta las tierras altas de Etiopía, cada taza cuenta una historia única.</p>
+        </div>
+    </div>
+
+    <script>
+        let isEnglish = true;
+        let cart = [];
+        let cartCount = 0;
+
+        const translations = {
+            en: {
+                title: "The Harvest Coffee",
+                product1: "Colombian Coffee",
+                description1: "A rich and aromatic coffee from the mountains of Colombia.",
+                price1: "Price: $10.00",
+                buyButton1: "Buy Now",
+                product2: "Ethiopian Coffee",
+                description2: "A fruity and floral coffee with a unique taste from Ethiopia.",
+                price2: "Price: $12.00",
+                buyButton2: "Buy Now",
+                product3: "Brazilian Coffee",
+                description3: "A smooth and nutty coffee from the heart of Brazil.",
+                price3: "Price: $9.00",
+                buyButton3: "Buy Now",
+                languageButton: "Español",
+                originText: "Our coffees are carefully selected from the best coffee-growing regions in the world. From the mountains of Colombia to the highlands of Ethiopia, each cup tells a unique story.",
+                cartTitle: "Shopping Cart",
+                payButton: "Pay",
+                continueButton: "Continue Shopping",
+                checkoutTitle: "Checkout",
+                cardName: "Name on Card",
+                cardNumber: "Card Number",
+                completePurchase: "Complete Purchase",
+                purchaseSuccess: "Purchase successful! Thank you for your order."
+            },
+            es: {
+                title: "El Café de la Cosecha",
+                product1: "Café Colombiano",
+                description1: "Un café rico y aromático de las montañas de Colombia.",
+                price1: "Precio: $10.00",
+                buyButton1: "Comprar Ahora",
+                product2: "Café Etíope",
+                description2: "Un café afrutado y floral con un sabor único de Etiopía.",
+                price2: "Precio: $12.00",
+                buyButton2: "Comprar Ahora",
+                product3: "Café Brasileño",
+                description3: "Un café suave y con notas de nuez del corazón de Brasil.",
+                price3: "Precio: $9.00",
+                buyButton3: "Comprar Ahora",
+                languageButton: "English",
+                originText: "Nuestros cafés son cuidadosamente seleccionados de las mejores regiones cafetaleras del mundo. Desde las montañas de Colombia hasta las tierras altas de Etiopía, cada taza cuenta una historia única.",
+                cartTitle: "Carrito de Compras",
+                payButton: "Pagar",
+                continueButton: "Seguir Comprando",
+                checkoutTitle: "Pagar",
+                cardName: "Nombre en la tarjeta",
+                cardNumber: "Número de tarjeta",
+                completePurchase: "Completar Compra",
+                purchaseSuccess: "¡Compra exitosa! Gracias por tu pedido."
+            }
+        };
+
+        function toggleLanguage() {
+            isEnglish = !isEnglish;
+            const lang = isEnglish ? "en" : "es";
+            document.getElementById("product1").innerText = translations[lang].product1;
+            document.getElementById("description1").innerText = translations[lang].description1;
+            document.getElementById("price1").innerText = translations[lang].price1;
+            document.getElementById("buyButton1").innerText = translations[lang].buyButton1;
+            document.getElementById("product2").innerText = translations[lang].product2;
+            document.getElementById("description2").innerText = translations[lang].description2;
+            document.getElementById("price2").innerText = translations[lang].price2;
+            document.getElementById("buyButton2").innerText = translations[lang].buyButton2;
+            document.getElementById("product3").innerText = translations[lang].product3;
+            document.getElementById("description3").innerText = translations[lang].description3;
+            document.getElementById("price3").innerText = translations[lang].price3;
+            document.getElementById("buyButton3").innerText = translations[lang].buyButton3;
+            document.getElementById("languageButton").innerText = translations[lang].languageButton;
+            document.getElementById("origin-text").innerText = translations[lang].originText;
+            document.querySelector(".cart-items h3").innerText = translations[lang].cartTitle;
+            document.querySelector(".cart-actions button:nth-child(1)").innerText = translations[lang].payButton;
+            document.querySelector(".cart-actions button:nth-child(2)").innerText = translations[lang].continueButton;
+            document.querySelector(".checkout-form h3").innerText = translations[lang].checkoutTitle;
+            document.getElementById("card-name").placeholder = translations[lang].cardName;
+            document.getElementById("card-number").placeholder = translations[lang].cardNumber;
+            document.querySelector(".checkout-form button").innerText = translations[lang].completePurchase;
+        }
+
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price: price });
+            cartCount++;
+            document.getElementById("cart-count").innerText = cartCount;
+            updateCartList();
+        }
+
+        function updateCartList() {
+            const cartList = document.getElementById("cart-list");
+            cartList.innerHTML = "";
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement("div");
+                cartItem.className = "cart-item";
+                cartItem.innerHTML = `
+                    <span>${item.name} - $${item.price}</span>
+                    <button onclick="removeFromCart(${index})">Eliminar</button>
+                `;
+                cartList.appendChild(cartItem);
+            });
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            cartCount--;
+            document.getElementById("cart-count").innerText = cartCount;
+            updateCartList();
+        }
+
+        function toggleCart() {
+            const cartItems = document.getElementById("cart-items");
+            cartItems.classList.toggle("show");
+            document.getElementById("checkout-form").classList.remove("show");
+        }
+
+        function showCheckout() {
+            document.getElementById("cart-items").classList.remove("show");
+            document.getElementById("checkout-form").classList.add("show");
+        }
+
+        function completePurchase() {
+            const cardName = document.getElementById("card-name").value;
+            const cardNumber = document.getElementById("card-number").value;
+            if (cardName && cardNumber) {
+                alert(translations[isEnglish ? "en" : "es"].purchaseSuccess);
+                cart = [];
+                cartCount = 0;
+                document.getElementById("cart-count").innerText = cartCount;
+                document.getElementById("cart-list").innerHTML = "";
+                document.getElementById("checkout-form").classList.remove("show");
+                document.getElementById("card-name").value = "";
+                document.getElementById("card-number").value = "";
+            } else {
+                alert("Por favor, complete todos los campos.");
+            }
+        }
+    </script>
+</body>
+</html>
